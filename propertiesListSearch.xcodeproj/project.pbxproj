@@ -70,14 +70,14 @@
 				84915FE91EAD95980074666B /* AppDelegate.m */,
 				84915FEB1EAD95980074666B /* ViewController.h */,
 				84915FEC1EAD95980074666B /* ViewController.m */,
+				849160011EAD9EB10074666B /* NamesTableViewController.h */,
+				849160021EAD9EB10074666B /* NamesTableViewController.m */,
 				84915FEE1EAD95980074666B /* Main.storyboard */,
 				84915FF41EAD95980074666B /* Assets.xcassets */,
 				84915FF61EAD95980074666B /* LaunchScreen.storyboard */,
 				84915FF91EAD95980074666B /* Info.plist */,
 				84915FF11EAD95980074666B /* propertiesListSearch.xcdatamodeld */,
 				84915FE51EAD95980074666B /* Supporting Files */,
-				849160011EAD9EB10074666B /* NamesTableViewController.h */,
-				849160021EAD9EB10074666B /* NamesTableViewController.m */,
 			);
 			path = propertiesListSearch;
 			sourceTree = "<group>";
@@ -314,6 +314,7 @@
 				84915FFE1EAD95980074666B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

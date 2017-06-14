@@ -17,11 +17,13 @@ static NSString *const TYPE_FILE = @"plist";
 
 @implementation NamesTableViewController
 
-@synthesize names, keys;
+@synthesize names, keys, filteredNames, searchBar, searchController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    [self.tableView setTag:1];
+    filteredNames = [[NSMutableArray alloc] init];
     NSString *path = [[NSBundle mainBundle]pathForResource:NAME_DATA ofType:TYPE_FILE];
     names = [NSDictionary dictionaryWithContentsOfFile:path];
     keys = [[names allKeys] sortedArrayUsingSelector: @selector(compare:)];
@@ -35,14 +37,21 @@ static NSString *const TYPE_FILE = @"plist";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [keys count];
+    if (tableView.tag == 1) {
+        return [keys count];
+    }
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSString *key = keys[section];
-    NSArray *arrayNames = names[key];
+    if (tableView.tag == 1) {
+        NSString *key = keys[section];
+        NSArray *arrayNames = names[key];
+        
+        return [arrayNames count];
+    }
     
-    return [arrayNames count];
+    return [filteredNames count];
 }
 
 
@@ -62,8 +71,21 @@ static NSString *const TYPE_FILE = @"plist";
 }
 
 - (NSArray *) sectionIndexTitlesForTableView:(UITableView *)tableView {
-    return keys;
+    if (tableView.tag == 1) {
+        return keys;
+    }
+    
+    return nil;
 }
+
+- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (tableView.tag == 1) {
+        return keys[section];
+    }
+    
+    return nil;
+}
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

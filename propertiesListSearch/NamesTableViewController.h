@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NamesTableViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate>
-
-@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+@interface NamesTableViewController : UITableViewController <UISearchDisplayDelegate, UISearchBarDelegate>
 @property (nonatomic, copy) NSDictionary *names;
 @property (nonatomic, copy) NSArray *keys;
+@property (nonatomic, copy) NSMutableArray *filteredNames;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) UISearchController *searchController;
 
 @end
