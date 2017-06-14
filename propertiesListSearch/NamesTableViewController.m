@@ -17,16 +17,28 @@ static NSString *const TYPE_FILE = @"plist";
 
 @implementation NamesTableViewController
 
-@synthesize names, keys, filteredNames, searchBar, searchController;
+@synthesize names, keys, filteredNames, searchBar, isFiltered;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    [self.tableView setTag:1];
-    filteredNames = [[NSMutableArray alloc] init];
+    self.searchBar.delegate = self;
     NSString *path = [[NSBundle mainBundle]pathForResource:NAME_DATA ofType:TYPE_FILE];
     names = [NSDictionary dictionaryWithContentsOfFile:path];
     keys = [[names allKeys] sortedArrayUsingSelector: @selector(compare:)];
+    filteredNames = [[NSMutableArray alloc] init];
+    [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    CGRect newBounds = self.tableView.bounds;
+    if (self.tableView.bounds.origin.y < 44) {
+        newBounds.origin.y = newBounds.origin.y + self.searchBar.bounds.size.height;
+        self.tableView.bounds = newBounds;
+    }
+    // new for iOS 7
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:0 animated:YES];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,21 +49,27 @@ static NSString *const TYPE_FILE = @"plist";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (tableView.tag == 1) {
+    if (!isFiltered) {
         return [keys count];
     }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView.tag == 1) {
-        NSString *key = keys[section];
-        NSArray *arrayNames = names[key];
-        
-        return [arrayNames count];
+//    if (tableView.tag == 1) {
+//        NSString *key = keys[section];
+//        NSArray *arrayNames = names[key];
+//        
+//        return [arrayNames count];
+//    }
+    
+    if (isFiltered) {
+        return filteredNames.count;
     }
     
-    return [filteredNames count];
+    NSString *key = keys[section];
+    NSArray *arrayNames = names[key];
+    return [arrayNames count];
 }
 
 
@@ -61,17 +79,19 @@ static NSString *const TYPE_FILE = @"plist";
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    
-    NSString *key = keys[indexPath.section];
-    NSArray *keyValues = names[key];
-    
-    cell.textLabel.text = keyValues[indexPath.row];
-    
+    if (isFiltered) {
+        cell.textLabel.text = filteredNames[indexPath.row];
+    } else {
+        NSString *key = keys[indexPath.section];
+        NSArray *keyValues = names[key];
+        
+        cell.textLabel.text = keyValues[indexPath.row];
+    }
     return cell;
 }
 
 - (NSArray *) sectionIndexTitlesForTableView:(UITableView *)tableView {
-    if (tableView.tag == 1) {
+    if (!isFiltered) {
         return keys;
     }
     
@@ -79,55 +99,38 @@ static NSString *const TYPE_FILE = @"plist";
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (tableView.tag == 1) {
+    if (!isFiltered) {
         return keys[section];
     }
     
     return nil;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if (searchText.length == 0) {
+        isFiltered = NO;
+    } else {
+        isFiltered = YES;
+
+        [filteredNames removeAllObjects];
+        NSPredicate *pre = [NSPredicate predicateWithFormat:@"SELF contains [search] %@", searchText];
+        
+        for (NSString *key in keys) {
+            NSArray *matches = [names[key] filteredArrayUsingPredicate:pre];
+            [filteredNames addObjectsFromArray:matches];
+        }
+    }
+    
+    [self.tableView reloadData];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+-(void) searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    isFiltered = NO;
+    [self.tableView reloadData];
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+
+- (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+//    [self.tableView resignFirstResponder];
 }
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

@@ -13,6 +13,6 @@
 @property (nonatomic, copy) NSArray *keys;
 @property (nonatomic, copy) NSMutableArray *filteredNames;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (strong, nonatomic) UISearchController *searchController;
+@property (nonatomic, assign) BOOL isFiltered;
 
 @end
