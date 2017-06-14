@@ -31,13 +31,6 @@ static NSString *const TYPE_FILE = @"plist";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    CGRect newBounds = self.tableView.bounds;
-    if (self.tableView.bounds.origin.y < 44) {
-        newBounds.origin.y = newBounds.origin.y + self.searchBar.bounds.size.height;
-        self.tableView.bounds = newBounds;
-    }
-    // new for iOS 7
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:0 animated:YES];
     [self.tableView reloadData];
 }
 

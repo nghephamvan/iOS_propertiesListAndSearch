@@ -39,7 +39,6 @@
                     <navigationItem key="navigationItem" title="Names" id="ACg-xu-uBB"/>
                     <connections>
                         <outlet property="searchBar" destination="2pc-Bg-JYt" id="dkF-Bu-qzn"/>
-                        <outlet property="searchDisplayController" destination="RiI-0S-EbH" id="bZX-mK-Vje"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mrc-BK-ZGM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -49,15 +48,6 @@
                         <outlet property="searchContentsController" destination="vPH-07-uDN" id="7CY-ZA-RFG"/>
                         <outlet property="searchResultsDataSource" destination="vPH-07-uDN" id="6EL-y1-TTA"/>
                         <outlet property="searchResultsDelegate" destination="vPH-07-uDN" id="TZ6-fj-r8X"/>
-                    </connections>
-                </searchDisplayController>
-                <searchDisplayController id="RiI-0S-EbH">
-                    <connections>
-                        <outlet property="delegate" destination="vPH-07-uDN" id="ctC-Hi-oRq"/>
-                        <outlet property="searchBar" destination="2pc-Bg-JYt" id="Fpo-Rc-QIV"/>
-                        <outlet property="searchContentsController" destination="vPH-07-uDN" id="2G5-qz-zCd"/>
-                        <outlet property="searchResultsDataSource" destination="vPH-07-uDN" id="Kc6-kl-cda"/>
-                        <outlet property="searchResultsDelegate" destination="vPH-07-uDN" id="rew-p9-O1i"/>
                     </connections>
                 </searchDisplayController>
             </objects>
