@@ -17,12 +17,13 @@ static NSString *const TYPE_FILE = @"plist";
 
 @implementation NamesTableViewController
 
-@synthesize names, keys, filteredNames, searchBar, isFiltered;
+@synthesize names, keys, filteredNames, searchBar;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.searchBar.delegate = self;
     [self.tableView setTag:1];
+    self.navigationItem.titleView = searchBar;
     NSString *path = [[NSBundle mainBundle]pathForResource:NAME_DATA ofType:TYPE_FILE];
     names = [NSDictionary dictionaryWithContentsOfFile:path];
     keys = [[names allKeys] sortedArrayUsingSelector: @selector(compare:)];
