@@ -13,17 +13,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search names" id="2pc-Bg-JYt">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search names" id="EYL-Mf-Lkn">
+                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                             <connections>
-                                <outlet property="delegate" destination="05P-bw-xZd" id="eeJ-XO-K8N"/>
+                                <outlet property="delegate" destination="vPH-07-uDN" id="SJl-QW-zVg"/>
                             </connections>
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="jt6-Dp-Jfh">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="136" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jt6-Dp-Jfh" id="U7S-10-AlF">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -37,8 +37,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Names" id="ACg-xu-uBB"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="searchBar" destination="2pc-Bg-JYt" id="dkF-Bu-qzn"/>
+                        <outlet property="searchBar" destination="EYL-Mf-Lkn" id="rqP-yu-o72"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mrc-BK-ZGM" userLabel="First Responder" sceneMemberID="firstResponder"/>

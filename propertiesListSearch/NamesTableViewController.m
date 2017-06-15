@@ -22,6 +22,7 @@ static NSString *const TYPE_FILE = @"plist";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.searchBar.delegate = self;
+    [self.tableView setTag:1];
     NSString *path = [[NSBundle mainBundle]pathForResource:NAME_DATA ofType:TYPE_FILE];
     names = [NSDictionary dictionaryWithContentsOfFile:path];
     keys = [[names allKeys] sortedArrayUsingSelector: @selector(compare:)];
@@ -42,21 +43,14 @@ static NSString *const TYPE_FILE = @"plist";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (!isFiltered) {
+    if (self.tableView.tag == 1) {
         return [keys count];
     }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    if (tableView.tag == 1) {
-//        NSString *key = keys[section];
-//        NSArray *arrayNames = names[key];
-//        
-//        return [arrayNames count];
-//    }
-    
-    if (isFiltered) {
+    if (self.tableView.tag != 1) {
         return filteredNames.count;
     }
     
@@ -72,7 +66,7 @@ static NSString *const TYPE_FILE = @"plist";
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    if (isFiltered) {
+    if (self.tableView.tag !=1) {
         cell.textLabel.text = filteredNames[indexPath.row];
     } else {
         NSString *key = keys[indexPath.section];
@@ -84,7 +78,7 @@ static NSString *const TYPE_FILE = @"plist";
 }
 
 - (NSArray *) sectionIndexTitlesForTableView:(UITableView *)tableView {
-    if (!isFiltered) {
+    if (self.tableView.tag == 1) {
         return keys;
     }
     
@@ -92,7 +86,7 @@ static NSString *const TYPE_FILE = @"plist";
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (!isFiltered) {
+    if (self.tableView.tag == 1) {
         return keys[section];
     }
     
@@ -101,9 +95,9 @@ static NSString *const TYPE_FILE = @"plist";
 
 - (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     if (searchText.length == 0) {
-        isFiltered = NO;
+        self.tableView.tag = 1;
     } else {
-        isFiltered = YES;
+        self.tableView.tag = 0;
 
         [filteredNames removeAllObjects];
         NSPredicate *pre = [NSPredicate predicateWithFormat:@"SELF contains [search] %@", searchText];
@@ -118,12 +112,13 @@ static NSString *const TYPE_FILE = @"plist";
 }
 
 -(void) searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    isFiltered = NO;
+    self.tableView.tag = 0;
+    self.searchBar.text = nil;
     [self.tableView reloadData];
 }
 
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-//    [self.tableView resignFirstResponder];
+    [self.tableView resignFirstResponder];
 }
 @end
